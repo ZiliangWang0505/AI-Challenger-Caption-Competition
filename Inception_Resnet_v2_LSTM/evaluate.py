@@ -36,11 +36,11 @@ import show_and_tell_model
 
 FLAGS = tf.flags.FLAGS
 
-tf.flags.DEFINE_string("input_file_pattern", "../../dataset_TFRecord/dataset_Chinese_AI_Challenger/val-?????-of-00064",
+tf.flags.DEFINE_string("input_file_pattern", "",
                        "File pattern of sharded TFRecord input files.")
-tf.flags.DEFINE_string("checkpoint_dir", "../../model_para/inception_resnet_v2_LSTM_Chinese/train/",
+tf.flags.DEFINE_string("checkpoint_dir", "",
                        "Directory containing model checkpoints.")
-tf.flags.DEFINE_string("eval_dir", "../../model_para/inception_resnet_v2_LSTM_Chinese/val/", 
+tf.flags.DEFINE_string("eval_dir", "", 
                        "Directory to write event logs.")
 tf.flags.DEFINE_integer("eval_interval_secs", 600,
                         "Interval between evaluation runs.")
