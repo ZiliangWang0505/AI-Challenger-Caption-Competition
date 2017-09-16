@@ -32,13 +32,13 @@ from inference_utils import vocabulary
 
 FLAGS = tf.flags.FLAGS
 
-tf.flags.DEFINE_string("checkpoint_path", "../../model_para/inception_resnet_v2_LSTM_Chinese/train/",
+tf.flags.DEFINE_string("checkpoint_path", "",
                        "Model checkpoint file or directory containing a model checkpoint file.")
-tf.flags.DEFINE_string("vocab_file", "../../dataset_TFRecord/dataset_Chinese_AI_Challenger/word_counts.txt", 
+tf.flags.DEFINE_string("vocab_file", "", 
                        "Text file containing the vocabulary.")
-tf.flags.DEFINE_string("input_files", "../../dataset_original/AI_Challenger/ai_challenger_caption_validation_20170910/caption_validation_images_20170910/*.jpg",
+tf.flags.DEFINE_string("input_files", "",
                        "File pattern or comma-separated list of file patterns of image files.")
-tf.flags.DEFINE_string("captions_file", "../../model_para/inception_resnet_v2_LSTM_Chinese/caption_test_annotations.json",
+tf.flags.DEFINE_string("captions_file", "",
                        "Test captions JSON file.")
 
 tf.logging.set_verbosity(tf.logging.INFO)
