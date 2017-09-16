@@ -26,11 +26,11 @@ import show_and_tell_model
 
 FLAGS = tf.app.flags.FLAGS
 
-tf.flags.DEFINE_string("input_file_pattern", "../../dataset_TFRecord/dataset_Chinese_AI_Challenger/train-?????-of-00512",
+tf.flags.DEFINE_string("input_file_pattern", "",
                        "File pattern of sharded TFRecord input files.")
-tf.flags.DEFINE_string("inception_checkpoint_file", "../../model_init_para/inception_resnet_v2/inception_resnet_v2_2016_08_30.ckpt",
+tf.flags.DEFINE_string("inception_checkpoint_file", "",
                        "Path to a pretrained inception_v3 model.")
-tf.flags.DEFINE_string("train_dir", "../../model_para/inception_resnet_v2_LSTM_Chinese/train/",
+tf.flags.DEFINE_string("train_dir", "",
                        "Directory for saving and loading model checkpoints.")
 tf.flags.DEFINE_boolean("train_inception", False,
                         "Whether to train inception submodel variables.")
