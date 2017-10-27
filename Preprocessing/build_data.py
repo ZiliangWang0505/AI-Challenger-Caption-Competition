@@ -72,7 +72,7 @@ import numpy as np
 import tensorflow as tf
 
 reload(sys)
-sys.setdefaultending('utf-8')
+sys.setdefaultencoding('utf-8')
 
 tf.flags.DEFINE_string("train_image_dir", "",
                        "Training image directory.")
