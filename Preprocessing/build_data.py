@@ -343,7 +343,7 @@ def _create_vocab(captions):
 
   # Write out the word counts file.
   with tf.gfile.FastGFile(FLAGS.word_counts_output_file, "w") as f:
-    f.write("\n".join(["%s %d" % (w, c) for w, c in word_counts]))
+    f.write("\n".join(["%s %d" % (w, c) for w, c in word_counts]).encode('utf-8'))
   print("Wrote vocabulary file:", FLAGS.word_counts_output_file)
 
   # Create the vocabulary dictionary.
