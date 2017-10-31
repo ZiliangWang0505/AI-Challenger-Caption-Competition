@@ -36,17 +36,14 @@ tf.flags.DEFINE_string(
     "checkpoint_path",
     "",
     "Model checkpoint file or directory containing a model checkpoint file.")
-
 tf.flags.DEFINE_string(
     "vocab_file",
     "",
     "Text file containing the vocabulary.")
-
 tf.flags.DEFINE_string(
     "input_files",
     "",
     "File pattern or comma-separated list of file patterns of image files.")
-
 tf.flags.DEFINE_string(
     "captions_file",
     "",

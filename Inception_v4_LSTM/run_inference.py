@@ -34,22 +34,19 @@ FLAGS = tf.flags.FLAGS
 
 tf.flags.DEFINE_string(
     "checkpoint_path",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/inception_v4_LSTM/train/",
     "Model checkpoint file or directory containing a model checkpoint file.")
-
 tf.flags.DEFINE_string(
     "vocab_file",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/data/vocabulary.txt",
     "Text file containing the vocabulary.")
-
 tf.flags.DEFINE_string(
     "input_files",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/dataset/ai_challenger_caption_validation/caption_validation_images/*.jpg",
     "File pattern or comma-separated list of file patterns of image files.")
-
 tf.flags.DEFINE_string(
     "captions_file",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/submit/caption_test_annotations_Inception_v4_LSTM_1000000_0.json",
     "Test captions JSON file.")
 
 tf.logging.set_verbosity(tf.logging.INFO)

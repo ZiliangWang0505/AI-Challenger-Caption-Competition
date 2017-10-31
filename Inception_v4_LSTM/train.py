@@ -34,7 +34,7 @@ tf.flags.DEFINE_string(
 tf.flags.DEFINE_string(
     "inception_checkpoint_file",
     "",
-    "Path to a pretrained inception_v3 model.")
+    "Path to a pretrained inception_v4 model.")
 
 tf.flags.DEFINE_string(
     "train_dir",
@@ -53,7 +53,7 @@ tf.flags.DEFINE_integer(
 
 tf.flags.DEFINE_integer(
     "log_every_n_steps",
-    1,
+    200,
     "Frequency at which loss and global step are logged.")
 
 tf.logging.set_verbosity(tf.logging.INFO)

@@ -53,7 +53,7 @@ tf.flags.DEFINE_integer(
 
 tf.flags.DEFINE_integer(
     "log_every_n_steps",
-    1,
+    200,
     "Frequency at which loss and global step are logged.")
 
 tf.logging.set_verbosity(tf.logging.INFO)
