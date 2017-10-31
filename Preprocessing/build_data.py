@@ -341,10 +341,17 @@ def _create_vocab(captions):
     word_counts.sort(key=lambda x: x[1], reverse=True)
     print("Words in vocabulary:", len(word_counts))
 
+<<<<<<< HEAD
     # Write out the word counts file.
     with tf.gfile.FastGFile(FLAGS.word_counts_output_file, "w") as f:
         f.write("\n".join(["%s %d" % (w, c) for w, c in word_counts]).encode('utf-8'))
     print("Wrote vocabulary file:", FLAGS.word_counts_output_file)
+=======
+  # Write out the word counts file.
+  with tf.gfile.FastGFile(FLAGS.word_counts_output_file, "w") as f:
+    f.write("\n".join(["%s %d" % (w, c) for w, c in word_counts]))
+  print("Wrote vocabulary file:", FLAGS.word_counts_output_file)
+>>>>>>> c6b7fb5d024edb64795e0de3bd427008b9f73561
 
     # Create the vocabulary dictionary.
     reverse_vocab = [x[0] for x in word_counts]
