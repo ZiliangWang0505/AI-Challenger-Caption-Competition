@@ -28,33 +28,21 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.flags.DEFINE_string(
     "input_file_pattern",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/data/*of*",
     "File pattern of sharded TFRecord input files.")
-
 tf.flags.DEFINE_string(
     "inception_checkpoint_file",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_init_para/inception_v4/inception_v4.ckpt",
     "Path to a pretrained inception_v4 model.")
-
 tf.flags.DEFINE_string(
     "train_dir",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_v4_LSTM/train/",
     "Directory for saving and loading model checkpoints.")
-
-tf.flags.DEFINE_boolean(
-    "train_inception",
-    False,
-    "Whether to train inception submodel variables.")
-
-tf.flags.DEFINE_integer(
-    "number_of_steps",
-    1000000,
-    "Number of training steps.")
-
-tf.flags.DEFINE_integer(
-    "log_every_n_steps",
-    200,
-    "Frequency at which loss and global step are logged.")
+tf.flags.DEFINE_boolean("train_inception", True,
+                        "Whether to train inception submodel variables.")
+tf.flags.DEFINE_integer("number_of_steps", 3000000, "Number of training steps.")
+tf.flags.DEFINE_integer("log_every_n_steps", 200,
+                        "Frequency at which loss and global step are logged.")
 
 tf.logging.set_verbosity(tf.logging.INFO)
 

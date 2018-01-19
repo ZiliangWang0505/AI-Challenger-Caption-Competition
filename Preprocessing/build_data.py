@@ -63,6 +63,7 @@ from collections import Counter
 from collections import namedtuple
 from datetime import datetime
 import json
+import os
 import os.path
 import random
 import sys
@@ -74,18 +75,28 @@ import tensorflow as tf
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-tf.flags.DEFINE_string("train_image_dir", "",
-                       "Training image directory.")
-tf.flags.DEFINE_string("val_image_dir", "",
-                       "Validation image directory.")
+tf.flags.DEFINE_string(
+    "train_image_dir",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/dataset/ai_challenger_caption_train/",
+    "Training image directory.")
+tf.flags.DEFINE_string(
+    "val_image_dir",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/dataset/ai_challenger_caption_validation/caption_validation_images/",
+    "Validation image directory.")
 
-tf.flags.DEFINE_string("train_captions_file", "",
-                       "Training captions JSON file.")
-tf.flags.DEFINE_string("val_captions_file", "",
-                       "Validation captions JSON file.")
+tf.flags.DEFINE_string(
+    "train_captions_file",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/dataset/ai_challenger_caption_train/caption_train_annotations.json",
+    "Training captions JSON file.")
+tf.flags.DEFINE_string(
+    "val_captions_file",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/dataset/ai_challenger_caption_validation/caption_validation_annotation.json",
+    "Validation captions JSON file.")
 
-tf.flags.DEFINE_string("output_dir", "",
-                       "Output data directory.")
+tf.flags.DEFINE_string(
+    "output_dir",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/data/",
+    "Output data directory.")
 
 tf.flags.DEFINE_integer("train_shards", 512,
                         "Number of shards in training TFRecord files.")
@@ -99,11 +110,15 @@ tf.flags.DEFINE_string("end_word", "</S>",
 tf.flags.DEFINE_string("unknown_word", "<UNK>",
                        "Special word meaning 'unknown'.")
 
-tf.flags.DEFINE_integer("min_word_count", 4,
-                        "The minimum number of occurrences of each word in the training set for inclusion in the vocabulary.")
+tf.flags.DEFINE_integer("min_word_count",
+                        4,
+                        "The minimum number of occurrences of each word in the"
+                        "training set for inclusion in the vocabulary.")
 
-tf.flags.DEFINE_string("word_counts_output_file", "",
-                       "Output vocabulary file of word counts.")
+tf.flags.DEFINE_string(
+    "word_counts_output_file",
+    "/cephfs/group/youtu/gaia/atticuswang/data/vocabulary.txt",
+    "Output vocabulary file of word counts.")
 
 tf.flags.DEFINE_integer("num_threads", 8,
                         "Number of threads to preprocess the images.")
@@ -144,7 +159,8 @@ class ImageDecoder(object):
 
         # TensorFlow ops for JPEG decoding.
         self._encoded_jpeg = tf.placeholder(dtype=tf.string)
-        self._decode_jpeg = tf.image.decode_jpeg(self._encoded_jpeg, channels=3)
+        self._decode_jpeg = tf.image.decode_jpeg(
+            self._encoded_jpeg, channels=3)
 
     def decode_jpeg(self, encoded_jpeg):
         image = self._sess.run(self._decode_jpeg,
@@ -233,20 +249,25 @@ def _process_image_files(thread_index, ranges, name, images, decoder, vocab,
     assert not num_shards % num_threads
     num_shards_per_batch = int(num_shards / num_threads)
 
-    shard_ranges = np.linspace(ranges[thread_index][0], ranges[thread_index][1],
-                               num_shards_per_batch + 1).astype(int)
+    shard_ranges = np.linspace(
+        ranges[thread_index][0],
+        ranges[thread_index][1],
+        num_shards_per_batch +
+        1).astype(int)
     num_images_in_thread = ranges[thread_index][1] - ranges[thread_index][0]
 
     counter = 0
     for s in range(num_shards_per_batch):
-        # Generate a sharded version of the file name, e.g. 'train-00002-of-00010'
+        # Generate a sharded version of the file name, e.g.
+        # 'train-00002-of-00010'
         shard = thread_index * num_shards_per_batch + s
         output_filename = "%s-%.5d-of-%.5d" % (name, shard, num_shards)
         output_file = os.path.join(FLAGS.output_dir, output_filename)
         writer = tf.python_io.TFRecordWriter(output_file)
 
         shard_counter = 0
-        images_in_shard = np.arange(shard_ranges[s], shard_ranges[s + 1], dtype=int)
+        images_in_shard = np.arange(
+            shard_ranges[s], shard_ranges[s + 1], dtype=int)
         for i in images_in_shard:
             image = images[i]
 
@@ -257,8 +278,9 @@ def _process_image_files(thread_index, ranges, name, images, decoder, vocab,
                 counter += 1
 
             if not counter % 1000:
-                print("%s [thread %d]: Processed %d of %d items in thread batch." %
-                      (datetime.now(), thread_index, counter, num_images_in_thread))
+                print(
+                    "%s [thread %d]: Processed %d of %d items in thread batch." %
+                    (datetime.now(), thread_index, counter, num_images_in_thread))
                 sys.stdout.flush()
 
         writer.close()
@@ -314,8 +336,9 @@ def _process_dataset(name, images, vocab, num_shards):
 
     # Wait for all the threads to terminate.
     coord.join(threads)
-    print("%s: Finished processing all %d image-caption pairs in data set '%s'." %
-          (datetime.now(), len(images), name))
+    print(
+        "%s: Finished processing all %d image-caption pairs in data set '%s'." %
+        (datetime.now(), len(images), name))
 
 
 def _create_vocab(captions):
@@ -384,7 +407,8 @@ def _load_and_process_metadata(captions_file, image_dir):
         caption_data = json.load(f)
 
     # Extract the id, filename and captions.
-    id_filename_captions = [(x["image_id"], x["caption"]) for x in caption_data]
+    id_filename_captions = [(x["image_id"], x["caption"])
+                            for x in caption_data]
     print("Loaded caption metadata for %d images from %s" %
           (len(id_filename_captions), captions_file))
 
@@ -393,7 +417,15 @@ def _load_and_process_metadata(captions_file, image_dir):
     image_metadata = []
     num_captions = 0
     for image_id, filename_captions in enumerate(id_filename_captions):
-        filename = os.path.join(image_dir, filename_captions[0])
+        filename0 = os.path.join(image_dir+"caption_train_images0/", filename_captions[0])
+        filename1 = os.path.join(image_dir+"caption_train_images1/", filename_captions[0])
+        filename2 = os.path.join(image_dir+"caption_train_images2/", filename_captions[0])
+        if os.path.isfile(filename0):
+            filename = filename0
+        elif os.path.isfile(filename1):
+            filename = filename1
+        else:
+            filename = filename2
         captions = [_process_caption(c) for c in filename_captions[1]]
         image_metadata.append(ImageMetadata(image_id, filename, captions))
         num_captions += len(captions)
@@ -415,10 +447,10 @@ def main(unused_argv):
         tf.gfile.MakeDirs(FLAGS.output_dir)
 
         # Load image metadata from caption files.
-    AI_Challenger_train_dataset = _load_and_process_metadata(FLAGS.train_captions_file,
-                                                             FLAGS.train_image_dir)
-    AI_Challenger_val_dataset = _load_and_process_metadata(FLAGS.val_captions_file,
-                                                           FLAGS.val_image_dir)
+    AI_Challenger_train_dataset = _load_and_process_metadata(
+        FLAGS.train_captions_file, FLAGS.train_image_dir)
+    AI_Challenger_val_dataset = _load_and_process_metadata(
+        FLAGS.val_captions_file, FLAGS.val_image_dir)
 
     train_dataset = AI_Challenger_train_dataset
     val_dataset = AI_Challenger_val_dataset
@@ -427,8 +459,8 @@ def main(unused_argv):
     train_captions = [c for image in train_dataset for c in image.captions]
     vocab = _create_vocab(train_captions)
 
-    _process_dataset("train", train_dataset, vocab, FLAGS.train_shards)
-    _process_dataset("val", val_dataset, vocab, FLAGS.val_shards)
+    # _process_dataset("train", train_dataset, vocab, FLAGS.train_shards)
+    # _process_dataset("val", val_dataset, vocab, FLAGS.val_shards)
 
 
 if __name__ == "__main__":

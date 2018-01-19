@@ -36,13 +36,19 @@ import show_and_tell_model
 
 FLAGS = tf.flags.FLAGS
 
-tf.flags.DEFINE_string("input_file_pattern", "",
-                       "File pattern of sharded TFRecord input files.")
-tf.flags.DEFINE_string("checkpoint_dir", "",
-                       "Directory containing model checkpoints.")
-tf.flags.DEFINE_string("eval_dir", "",
-                       "Directory to write event logs.")
-tf.flags.DEFINE_integer("eval_interval_secs", 600,
+tf.flags.DEFINE_string(
+    "input_file_pattern",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/data/val-000??-of-00064",
+    "File pattern of sharded TFRecord input files.")
+tf.flags.DEFINE_string(
+    "checkpoint_dir",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_v3_LSTM/train/",
+    "Directory containing model checkpoints.")
+tf.flags.DEFINE_string(
+    "eval_dir",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_v3_LSTM/val/",
+    "Directory to write event logs.")
+tf.flags.DEFINE_integer("eval_interval_secs", 900,
                         "Interval between evaluation runs.")
 tf.flags.DEFINE_integer("num_eval_examples", 150000,
                         "Number of examples for evaluation.")

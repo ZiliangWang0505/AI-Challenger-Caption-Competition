@@ -29,27 +29,27 @@ import configuration
 import inference_wrapper
 from inference_utils import caption_generator
 from inference_utils import vocabulary
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 FLAGS = tf.flags.FLAGS
 
 tf.flags.DEFINE_string(
     "checkpoint_path",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_v3_LSTM/train",
     "Model checkpoint file or directory containing a model checkpoint file.")
-
 tf.flags.DEFINE_string(
     "vocab_file",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/data/vocabulary.txt",
     "Text file containing the vocabulary.")
-
 tf.flags.DEFINE_string(
     "input_files",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/dataset/ai_challenger_caption_test_b_20171120/caption_test_b_images_20171120/*.jpg",
     "File pattern or comma-separated list of file patterns of image files.")
-
 tf.flags.DEFINE_string(
     "captions_file",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/submit/caption_test_b_annotations_Inception_v3_LSTM_1000000_1500000.json",
     "Test captions JSON file.")
 
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -82,22 +82,27 @@ def main(_):
         # available beam search parameters.
         generator = caption_generator.CaptionGenerator(model, vocab)
         image_id_caption = []
+        j = 0
         for filename in filenames:
             with tf.gfile.GFile(filename, "rb") as f:
                 image = f.read()
             captions = generator.beam_search(sess, image)
+            j += 1
+            print(j)
             print("Captions for image %s:" % os.path.basename(filename))
             for i, caption in enumerate(captions):
                 # Ignore begin and end words.
+                # print(caption.sentence[1:-1])
                 sentence = [vocab.id_to_word(w)
                             for w in caption.sentence[1:-1]]
+                # print(sentence)
                 sentence = "".join(sentence)
                 print("  %d) %s (p=%f)" %
                       (i, sentence, math.exp(caption.logprob)))
                 if not i:
                     image_id_caption.append(
                         {
-                            "image_id": filename.split('/')[-1],
+                            "image_id": filename.split('/')[-1].replace(".jpg",""),
                             "caption": sentence
                         },)
         image_id_caption = json.dumps(image_id_caption).encode('utf-8')

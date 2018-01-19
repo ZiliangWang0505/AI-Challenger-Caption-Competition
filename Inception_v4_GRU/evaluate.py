@@ -38,33 +38,23 @@ FLAGS = tf.flags.FLAGS
 
 tf.flags.DEFINE_string(
     "input_file_pattern",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/data/val-000??-of-00064",
     "File pattern of sharded TFRecord input files.")
-
 tf.flags.DEFINE_string(
     "checkpoint_dir",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_v4_GRU/train/",
     "Directory containing model checkpoints.")
-
 tf.flags.DEFINE_string(
     "eval_dir",
-    "",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_v4_GRU/val/",
     "Directory to write event logs.")
+tf.flags.DEFINE_integer("eval_interval_secs", 900,
+                        "Interval between evaluation runs.")
+tf.flags.DEFINE_integer("num_eval_examples", 150000,
+                        "Number of examples for evaluation.")
 
-tf.flags.DEFINE_integer(
-    "eval_interval_secs",
-    900,
-    "Interval between evaluation runs.")
-
-tf.flags.DEFINE_integer(
-    "num_eval_examples",
-    150000,
-    "Number of examples for evaluation.")
-
-tf.flags.DEFINE_integer(
-    "min_global_step",
-    5000,
-    "Minimum global step to run evaluation.")
+tf.flags.DEFINE_integer("min_global_step", 5000,
+                        "Minimum global step to run evaluation.")
 
 tf.logging.set_verbosity(tf.logging.INFO)
 

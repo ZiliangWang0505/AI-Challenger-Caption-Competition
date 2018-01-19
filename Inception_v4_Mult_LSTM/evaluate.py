@@ -42,13 +42,13 @@ tf.flags.DEFINE_string(
     "File pattern of sharded TFRecord input files.")
 tf.flags.DEFINE_string(
     "checkpoint_dir",
-    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/inception_v4_Mult_LSTM/train/",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_V4_Multi_LSTM/train/",
     "Directory containing model checkpoints.")
 tf.flags.DEFINE_string(
     "eval_dir",
-    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/inception_v4_Mult_LSTM/val/",
+    "/cephfs/group/youtu/gaia/atticuswang/AIChallenger/model_para/Inception_V4_Multi_LSTM/val/",
     "Directory to write event logs.")
-tf.flags.DEFINE_integer("eval_interval_secs", 900,
+tf.flags.DEFINE_integer("eval_interval_secs",1800,
                         "Interval between evaluation runs.")
 tf.flags.DEFINE_integer("num_eval_examples", 150000,
                         "Number of examples for evaluation.")

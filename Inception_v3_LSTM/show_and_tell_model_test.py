@@ -23,8 +23,8 @@ from __future__ import print_function
 import numpy as np
 import tensorflow as tf
 
-import configuration
-import show_and_tell_model
+from im2txt import configuration
+from im2txt import show_and_tell_model
 
 
 class ShowAndTellModel(show_and_tell_model.ShowAndTellModel):
@@ -95,7 +95,7 @@ class ShowAndTellModelTest(tf.test.TestCase):
             shape.
           feed_dict: Values of Tensors to feed into Session.run().
         """
-        fetches = list(expected_shapes.keys())
+        fetches = expected_shapes.keys()
 
         with self.test_session() as sess:
             sess.run(tf.global_variables_initializer())
